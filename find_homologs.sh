@@ -1,5 +1,5 @@
 #!/bin/bash
-makeblastdb -in "$2" -dbtype nucl -out blastdb
-tblastn -query "$1" -db blastdb -out temp -outfmt "6 pident qlen length"
-awk '$1 > 30 && $3 / $2 > 0.9' temp > "$3"
-grep -c . "$3"
+outputfile="$3"
+tblastn -query "$1" -subject "$2" -out temp.txt -task tblastn-fast -outfmt "6 qseqid sseqid pident length qlen" 
+awk '$3 > 30 && $4 / $5 > 0.9' temp.txt > "$outputfile"
+grep -c . "$outputfile"
